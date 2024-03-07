@@ -27,7 +27,7 @@ app.use(traceId);
 app.use('/', appRoutes);
 app.use(errorMiddleware);
 
-const server = createServer(app);
+export const server = createServer(app);
 
 server.listen(PORT, () => {
   logger.info(`Server listening at ${PORT}`);
