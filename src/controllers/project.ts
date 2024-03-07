@@ -2,6 +2,7 @@ import express from 'express';
 import { Project } from '../models/Project';
 import { addProjectSchema, updateProjectSchema } from '../validations/project';
 import { StatusCodes } from 'http-status-codes';
+import { Task } from '../models/Task';
 
 export const addProject = async (
   req: express.Request,
@@ -107,6 +108,32 @@ export const updateProject = async (
         .json({ error: 'project with given ID not found' });
 
     return res.json({ project });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getProjectTasks = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const { page = null, limit = null, search } = req.query;
+    const skip = Number(page) * Number(limit);
+
+    const tasks = await Task.find({ project: req.params.projectId })
+      .select(['-__v'])
+      .limit(Number(limit))
+      .skip(skip);
+    const totalCount = await Task.count();
+
+    return res.json({
+      page,
+      limit,
+      count: totalCount,
+      tasks,
+    });
   } catch (err) {
     next(err);
   }
