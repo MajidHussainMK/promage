@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+import { appRoutes } from './routes';
 import { errorMiddleware } from './middlewares/error';
 import { connectDB } from './config/db';
 import { handleExceptions, logger } from './utils/logger';
@@ -23,6 +24,7 @@ app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(traceId);
+app.use('/', appRoutes);
 app.use(errorMiddleware);
 
 const server = createServer(app);
