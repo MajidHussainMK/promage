@@ -17,7 +17,7 @@ export const addTask = async (
         .json({ error: result.error.details[0].message });
 
     if (new Date(startDate) > new Date(endDate)) {
-      return res.status(400).json({ message: 'start date cannot be before end date' });
+      return res.status(400).json({ error: 'start date cannot be before end date' });
     }
 
     const task = new Task({ ...req.body });
@@ -43,7 +43,7 @@ export const updateTask = async (
         .json({ error: result.error.details[0].message });
 
     if (new Date(startDate) > new Date(endDate)) {
-      return res.status(400).json({ message: 'start date cannot be before end date' });
+      return res.status(400).json({ error: 'start date cannot be after end date' });
     }
 
     const task = await Task.findByIdAndUpdate(

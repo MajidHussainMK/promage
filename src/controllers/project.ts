@@ -18,7 +18,7 @@ export const addProject = async (
         .json({ error: result.error.details[0].message });
 
     if (new Date(startDate) > new Date(endDate)) {
-      return res.status(400).json({ message: 'start date cannot be before end date' });
+      return res.status(400).json({ error: 'start date cannot be after end date' });
     }
 
     const project = new Project({ ...req.body });
@@ -93,7 +93,7 @@ export const updateProject = async (
         .json({ error: result.error.details[0].message });
 
     if (new Date(startDate) > new Date(endDate)) {
-      return res.status(400).json({ message: 'start date cannot be before end date' });
+      return res.status(400).json({ error: 'start date cannot be after end date' });
     }
 
     const project = await Project.findByIdAndUpdate(
